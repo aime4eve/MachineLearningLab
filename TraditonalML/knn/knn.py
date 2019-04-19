@@ -12,7 +12,7 @@ def classify(input, dataSet, labels, k):
     :param k:
     :return:
     """
-    dataSetSize = input.shape[0]
+    dataSetSize = dataSet.shape[0]
     diffMat = np.tile(input, (dataSetSize, 1)) - dataSet  # 测试数据与训练数据的距离
     sqDiffMat = diffMat ** 2
     sqdistance = sqDiffMat.sum(axis=1)
@@ -21,8 +21,8 @@ def classify(input, dataSet, labels, k):
     classCount = {}
     for i in range(k):
         voteLabel = labels[sortedDistanceIndex[i]]
-        classCount = classCount.get(voteLabel, 0) + 1
-    sortedClassCount=sorted(classCount.iteritems(),key=operator.itemgetter(1),reverse=True)
+        classCount[voteLabel] = classCount.get(voteLabel, 0) + 1
+    sortedClassCount=sorted(classCount.items(),key=operator.itemgetter(1),reverse=True)
     return sortedClassCount[0][0]
 
 def createDataSet():
@@ -38,7 +38,7 @@ if __name__=="__main__":
     #create dataset and label
     dataSet,labels=createDataSet()
     #define test data
-    testX=np.array([1,3,1.1])
+    testX=np.array([1.3,0.3])
     k=3
     outputlabel=classify(testX,dataSet,labels,k)
 
